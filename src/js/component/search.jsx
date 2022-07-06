@@ -18,9 +18,6 @@ const Search = () => {
 		setTasks(tasks.filter(element => element != taskDelete))
 	}
 
-
-
-
 	return (
 			<div className="text-center mt-5">
 				<h3 className="me-5">To-Do-List</h3>
@@ -28,7 +25,7 @@ const Search = () => {
 				onChange={write} 
 				onKeyUp={e => e.keyCode == 13 && addTask()} />
 				<button onClick={addTask}>Añadir</button>
-				{task ?
+				{tasks ?
 				<ul>
 					{
 						tasks.map((element, index) => {
@@ -41,7 +38,8 @@ const Search = () => {
 						})
 					}
 				</ul>
-				: <li className="li me-5 mt-2">No hay tarea, añadir tarea</li>}
+				: ""}
+				 {tasks.length != 0 ? <div className="label"><label>{tasks.length} item left</label></div> : <div>No hay tareas, añadir tareas</div>}
 			</div>
     )
 }
