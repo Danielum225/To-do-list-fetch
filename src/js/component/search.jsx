@@ -1,11 +1,17 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 const Search = () => {
+
+	const url = "https://assets.breatheco.de/apis/fake/todos/user/salchichasss"
 
 	const [task, setTask] = useState("")
 
 	const [tasks, setTasks] = useState([])
 	
+    useEffect(() => {
+		getData()
+	},[])
+
 	const write = (event) => {
 		setTask(event.target.value)
 	}
@@ -16,6 +22,52 @@ const Search = () => {
 
 	const deleteTask = (taskDelete) => {
 		setTasks(tasks.filter(element => element != taskDelete))
+	}
+
+	const getData = async () => {
+		await fetch(url)
+		.then (resp => {
+			
+			if(!resp.ok )
+				throw new Error("User don't exist")
+				
+
+			console.log(resp.status)
+			
+			return resp.json()
+		
+		})
+		.then (data => {
+			setTasks([...data])
+
+		})
+		.catch (error => {
+			console.log("hola")
+			console.log(error)
+			//createUser()
+		})
+	}
+
+	const createUser = async () => {
+		await fetch(url, {
+			method: "POST",
+			body: JSON.stringify(tasks), 
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+		.then (resp => {
+			if (!resp.ok)
+				throw new Error ("Error creating the user")
+		    
+				return resp.json()
+		})
+		.then (data => {
+			getData()
+		})
+		.catch (error => {
+			alert(error)
+		})
 	}
 
 	return (
